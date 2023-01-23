@@ -12,13 +12,13 @@ ffmpeg Screen Recorder
 Настройка:
 ----------
 
-* В `ffServer.bat` необходимо указать адрес, на котором будет работать сервер (`set server=YOURADDRESS:PORT`).
+* В `ffServer.bat` необходимо указать адрес компьютера, на котором будет запущен сервер: `set server=YOURADDRESS:PORT`
 
 При первом запуске скрипт скачает ffmpeg и распакует его в .\ffmpeg
 
 Полученные видеофайлы скрипт сохраняет в текущую папку в виде .\YOURWORKSTATION\YOURWORKSTATION 20230129-12-13-00.mp4
 
-* В `ffCapture.bat` необходимо указать название рабочей станции (`set mount=YOURWORKSTATION`) и адрес сервера (`set server=YOURADDRESS:PORT`).
+* В `ffCapture.bat` необходимо указать название рабочей станции: `set mount=YOURWORKSTATION` и адрес сервера `set server=YOURADDRESS:PORT`
 
 При первом запуске скрипт скачает ffmpeg и распакует его в .\ffmpeg
 
