@@ -2,14 +2,20 @@
 :: ffmpeg Screen Capture
 :: captures desktop screen and send stream via RTMP to %server%
 :: only video, no sound captured
-:: 2020-06-06 - v1 Initial version
+:: 2020-06-06 - v1.00 Initial version
+:: 2023-07-25 - v1.01 Typo fixes
 cd "%~dp0"
 
-
-set mount=europaair2
+:: 'Mount' assuming workstation name ot another ID of a recording session.
+:: You can have one server recording video from different workstations, so
+:: set mount name and port here
+set mount=europa-vi-ctrl
 set server=localhost:8889
 
 
+cls
+echo ffmpeg Screen Capture v1.01 [2023-07-25]
+echo.
 if not exist "%~dp0\log\." mkdir "%~dp0\log"
 if not exist "%~dp0\ffmpeg\ffmpeg.exe" (
   echo There's no ffmpeg.exe in .\ffmpeg folder.
@@ -20,8 +26,6 @@ if not exist "%~dp0\ffmpeg\ffmpeg.exe" (
   exit
 )
 if not exist "%~dp0\ffmpeg\." mkdir "%~dp0\ffmpeg"
-
-
 title ffCapture for %mount%
 
 
@@ -42,10 +46,11 @@ set FFREPORT=file=log/ffCapture-%mount%-%YEAR%%MONTH%%DAY%.log:level=32
 echo Deleting logs older than 30 days
 forfiles /p "log" /s /d -30 /c "cmd /c del @file" > nul
 echo *** %YEAR%-%MONTH%-%DAY% %MINS%:%HOUR%:%SECS% Old logs deleted >> log\ffServer-%mount%-%YEAR%%MONTH%%DAY%.log
+echo.
 
-echo Running ffmpeg.
+echo Running ffmpeg for screen capture.
 ffmpeg\ffmpeg.exe ^
-        -f gdigrab -rtbufsize 100M -framerate 12 -probesize 10M -draw_mouse 1 ^
+        -f gdigrab -rtbufsize 100M -framerate 4 -probesize 10M -draw_mouse 1 ^
         -i desktop -c:v libx264 -r 12 -preset ultrafast -tune zerolatency ^
         -crf 25 -pix_fmt yuv420p -loglevel "warning" ^
         -f flv rtmp://%server%/live/%mount%
@@ -72,4 +77,3 @@ goto:loop
 
 :quit
 echo *** %YEAR%-%MONTH%-%DAY% %MINS%:%HOUR%:%SECS% Q pressed >> log\ffCapture-%mount%-%YEAR%%MONTH%%DAY%.log
-
